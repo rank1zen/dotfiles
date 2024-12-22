@@ -91,7 +91,7 @@ deps.now(function()
   Cfg.leader('es', '<cmd>Pick list scope="jump"<cr>',                             'List the jumplist')
   Cfg.leader('ez', '<cmd>Pick resume<cr>',                                        'Resume most recent picker')
   Cfg.leader('ew', '<cmd>Pick grep pattern="<cword>"<cr>',                        'Grep current word')
-  Cfg.leader('et', '<cmd>Pick history scope=":"<cr>',                             'List command history')
+  Cfg.leader('eq', '<cmd>Pick history scope=":"<cr>',                             'List command history')
   Cfg.leader('ex', '<cmd>Pick options<cr>',                                       'Pick and apply option')
   Cfg.leader('ea', '<cmd>Pick spellsuggest<cr>',                                  'Suggest spelling')
   -- stylua: ignore end
