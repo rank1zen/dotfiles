@@ -77,21 +77,23 @@ Cfg.gen_z = function()
 end
 
 deps.now(function()
-  -- stylua: ignore start
   Cfg.leader('en', '<cmd>lua MiniVisits.iterate_paths("backward", nil, Cfg.gen_stack())<cr>')
   Cfg.leader('ep', '<cmd>lua MiniVisits.iterate_paths("forward",  nil, Cfg.gen_stack())<cr>')
-  Cfg.leader('er', '<cmd>lua MiniVisits.iterate_paths("first",    nil, Cfg.gen_stack())<cr>')
-  Cfg.leader('es', '<cmd>lua MiniExtra.pickers.visit_paths(Cfg.gen_stack())<cr>', 'List the MRU file stack')
-  Cfg.leader('ez', '<cmd>lua MiniExtra.pickers.visit_paths(Cfg.gen_z())<cr>',     'List the Z file stack')
-  Cfg.leader('eg', '<cmd>Pick grep_live<cr>',                                     'Live grep')
-  Cfg.leader('eh', '<cmd>Pick help<cr>',                                          'List help files')
+  -- stylua: ignore start
   Cfg.leader('ef', '<cmd>Pick files<cr>',                                         'List directory files')
-  Cfg.leader('ex', '<cmd>lua MiniFiles.open(vim.api.nvim_buf_get_name(0))<cr>',   'Open the file explorer at the current file')
-  Cfg.leader('ec', '<cmd>lua MiniFiles.open()<cr>',                               'Open the file explorer at CWD')
-  Cfg.leader('e.', '<cmd>Pick resume<cr>',                                        'Resume most recent picker')
-  Cfg.leader('eq', '<cmd>Pick list scope="jump"<cr>',                             'List the jumplist')
+  Cfg.leader('eg', '<cmd>Pick grep_live<cr>',                                     'Live grep')
+  Cfg.leader('er', '<cmd>lua MiniExtra.pickers.visit_paths(Cfg.gen_stack())<cr>', 'List MRU file stack')
+  Cfg.leader('et', '<cmd>lua MiniExtra.pickers.visit_paths(Cfg.gen_z())<cr>',     'List Z file stack')
+  Cfg.leader('ec', '<cmd>lua MiniFiles.open(vim.api.nvim_buf_get_name(0))<cr>',   'Open file explorer at current file')
+  Cfg.leader('ed', '<cmd>lua MiniFiles.open()<cr>',                               'Open file explorer at CWD')
+  Cfg.leader('eb', '<cmd>Pick buf_lines<cr>',                                     'Pick and go to line')
+  Cfg.leader('ev', '<cmd>Pick help<cr>',                                          'Pick and go to help file')
+  Cfg.leader('es', '<cmd>Pick list scope="jump"<cr>',                             'List the jumplist')
+  Cfg.leader('ez', '<cmd>Pick resume<cr>',                                        'Resume most recent picker')
   Cfg.leader('ew', '<cmd>Pick grep pattern="<cword>"<cr>',                        'Grep current word')
   Cfg.leader('et', '<cmd>Pick history scope=":"<cr>',                             'List command history')
+  Cfg.leader('ex', '<cmd>Pick options<cr>',                                       'Pick and apply option')
+  Cfg.leader('ea', '<cmd>Pick spellsuggest<cr>',                                  'Suggest spelling')
   -- stylua: ignore end
 end)
 
