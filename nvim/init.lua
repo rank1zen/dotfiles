@@ -269,6 +269,10 @@ Deps.now(function()
   -- stylua: ignore end
 end)
 
+Deps.now(function()
+  vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
+end)
+
 Deps.later(function()
   Deps.add('stevearc/conform.nvim')
 
