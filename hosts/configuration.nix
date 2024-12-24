@@ -1,14 +1,15 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-
-{ config, pkgs, ... }:
-
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  config,
+  pkgs,
+  ...
+}: {
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -40,7 +41,31 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.gordo = {
     isNormalUser = true;
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = ["networkmanager" "wheel"];
+  };
+
+  fonts = {
+    packages = with pkgs; [
+      noto-fonts
+      noto-fonts-cjk-sans
+      noto-fonts-cjk-serif
+      noto-fonts-emoji
+      source-sans
+      source-serif
+      go-font
+      lexend
+      inter
+    ];
+    fontconfig = {
+      subpixel.lcdfilter = "light";
+      hinting.style = "full";
+      defaultFonts = {
+        serif = ["Noto Serif"];
+        sansSerif = ["Noto Sans"];
+        monospace = ["Noto Sans Mono"];
+        emoji = ["Noto Color Emoji"];
+      };
+    };
   };
 
   # Allow unfree packages
@@ -49,9 +74,9 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-     wget
-     git
+    vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    wget
+    git
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -63,7 +88,7 @@
   };
 
   services.openssh = {
-  	enable = true;
+    enable = true;
   };
 
   services.pipewire = {
@@ -75,12 +100,12 @@
   };
 
   programs.hyprland = {
-  	enable = true;
+    enable = true;
     xwayland.enable = true;
   };
 
   environment.sessionVariables = {
-  	WLR_NO_HARDWARE_CURSORS = "1";
+    WLR_NO_HARDWARE_CURSORS = "1";
   };
 
   # List services that you want to enable:
@@ -102,6 +127,5 @@
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "24.05"; # Did you read the comment?
 
-  #nix.settings.experimental-features = ["nix-command" "flakes"];
-
+  nix.settings.experimental-features = ["nix-command" "flakes"];
 }
