@@ -1,11 +1,3 @@
-# TODO
-- [x] sound
-- [ ] wtf are gpg keys
-- [x] setup neovim
-- [x] wifi network
-- [x] setup nix lanugage features
-- [ ] fonts
-- [x] openssh
-- [x] fix hyprland
-- [ ] session variables
-- [ ] pass
+# Dotfiles
+
+A Flake for home-manager modules and NixOS.
