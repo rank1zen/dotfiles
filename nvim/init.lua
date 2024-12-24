@@ -26,13 +26,13 @@ if not vim.loop.fs_stat(mini_path) then
   vim.cmd('echo "Installed `mini.nvim`" | redraw')
 end
 
-local deps = require('mini.deps')
+local Deps = require('mini.deps')
 
-deps.setup {
+Deps.setup {
   path = { package = path_package },
 }
 
-deps.now(function()
+Deps.now(function()
   Cfg.borders = 'rounded'
 
   vim.g.mapleader = ' '
@@ -57,10 +57,10 @@ deps.now(function()
     signs = false,
   }
 
-  -- vim.cmd('colorscheme zoom')
+  --vim.cmd('colorscheme blue')
 end)
 
-deps.later(function() require('mini.extra').setup() end)
+Deps.later(function() require('mini.extra').setup() end)
 
 Cfg.gen_stack = function()
   return {
@@ -76,7 +76,7 @@ Cfg.gen_z = function()
   }
 end
 
-deps.now(function()
+Deps.now(function()
   Cfg.leader('en', '<cmd>lua MiniVisits.iterate_paths("backward", nil, Cfg.gen_stack())<cr>')
   Cfg.leader('ep', '<cmd>lua MiniVisits.iterate_paths("forward",  nil, Cfg.gen_stack())<cr>')
   -- stylua: ignore start
@@ -97,9 +97,9 @@ deps.now(function()
   -- stylua: ignore end
 end)
 
-deps.later(function() require('mini.visits').setup() end)
+Deps.later(function() require('mini.visits').setup() end)
 
-deps.later(function()
+Deps.later(function()
   require('mini.ai').setup {
     custom_textobjects = {
       -- default objs: b, q, t, f, a
@@ -113,7 +113,7 @@ deps.later(function()
   }
 end)
 
-deps.later(function()
+Deps.later(function()
   require('mini.pick').setup {
     options = { content_from_bottom = true, use_cache = false },
     source = { show = require('mini.pick').default_show },
@@ -127,7 +127,7 @@ deps.later(function()
   }
 end)
 
-deps.later(function()
+Deps.later(function()
   require('mini.files').setup {
     content = { prefix = function() end },
     options = { permanent_delete = false, use_as_default_explorer = false },
@@ -143,7 +143,7 @@ deps.later(function()
   })
 end)
 
-deps.now(function()
+Deps.now(function()
   local keys = {
     ['cr'] = vim.api.nvim_replace_termcodes('<CR>', true, true, true),
     ['ctrl-y'] = vim.api.nvim_replace_termcodes('<C-y>', true, true, true),
@@ -164,7 +164,7 @@ deps.now(function()
   vim.keymap.set('i', '<CR>', 'v:lua._G.cr_action()', { expr = true })
 end)
 
-deps.later(function()
+Deps.later(function()
   require('mini.completion').setup {
     lsp_completion = {
       auto_setup = false,
@@ -181,9 +181,9 @@ deps.later(function()
   }
 end)
 
-deps.later(function() require('mini.jump2d').setup() end)
+Deps.later(function() require('mini.jump2d').setup() end)
 
-deps.now(function()
+Deps.now(function()
   -- stylua: ignore start
   Cfg.leader('gcc',  '<cmd>Git commit<cr>',                               'Create a commit')
   Cfg.leader('gca',  '<cmd>Git commit --amend<cr>',                       'Amend the last commit and edit the message')
@@ -198,18 +198,18 @@ deps.now(function()
   -- stylua: ignore end
 end)
 
-deps.later(function() require('mini.diff').setup() end)
-deps.later(function() require('mini.git').setup() end)
+Deps.later(function() require('mini.diff').setup() end)
+Deps.later(function() require('mini.git').setup() end)
 
-deps.later(function() require('mini.pairs').setup() end)
-deps.later(function() require('mini.align').setup() end)
-deps.later(function() require('mini.operators').setup() end)
-deps.later(function() require('mini.surround').setup() end)
+Deps.later(function() require('mini.pairs').setup() end)
+Deps.later(function() require('mini.align').setup() end)
+Deps.later(function() require('mini.operators').setup() end)
+Deps.later(function() require('mini.surround').setup() end)
 
-deps.later(function() require('mini.splitjoin').setup() end)
-deps.later(function() require('mini.trailspace').setup() end)
+Deps.later(function() require('mini.splitjoin').setup() end)
+Deps.later(function() require('mini.trailspace').setup() end)
 
-deps.later(function()
+Deps.later(function()
   -- deps.add({
   --   source = 'nvim-treesitter/nvim-treesitter',
   --   checkout = 'master',
@@ -217,7 +217,7 @@ deps.later(function()
   --   hooks = { post_checkout = function() vim.cmd('TSUpdate') end },
   -- })
 
-  deps.add('nvim-treesitter/nvim-treesitter-textobjects')
+  Deps.add('nvim-treesitter/nvim-treesitter-textobjects')
 
   require('nvim-treesitter.configs').setup {
     ensure_installed = {},
@@ -240,7 +240,7 @@ deps.later(function()
   }
 end)
 
-deps.now(function()
+Deps.now(function()
   -- stylua: ignore start
   Cfg.leader('lq',  '<cmd>lua vim.lsp.buf.definition()<cr>',      'Definition')
   Cfg.leader('lt',  '<cmd>lua vim.lsp.buf.type_definition()<cr>', 'Type definition')
@@ -269,8 +269,8 @@ deps.now(function()
   -- stylua: ignore end
 end)
 
-deps.later(function()
-  deps.add('stevearc/conform.nvim')
+Deps.later(function()
+  Deps.add('stevearc/conform.nvim')
 
   require('conform').setup {
     formatters_by_ft = {
@@ -283,8 +283,18 @@ deps.later(function()
   }
 end)
 
-deps.later(function()
-  deps.add('neovim/nvim-lspconfig')
+Deps.later(function()
+  local snippets = require('mini.snippets')
+  snippets.setup {
+    snippets = {
+      snippets.gen_loader.from_file('~/nix-cfg/nvim/snippets/global.json'),
+      snippets.gen_loader.from_lang(),
+    },
+  }
+end)
+
+Deps.later(function()
+  Deps.add('neovim/nvim-lspconfig')
 
   vim.api.nvim_create_autocmd('LspAttach', {
     group = vim.api.nvim_create_augroup('UserLspConfig', {}),
@@ -298,6 +308,11 @@ deps.later(function()
   require('lspconfig').templ.setup {}
   require('lspconfig').texlab.setup {}
   require('lspconfig').nixd.setup {}
+end)
+
+Deps.later(function()
+  --deps.add('Bekaboo/dropbar.nvim')
+  --local dropbar = require('dropbar.api')
 end)
 
 Cfg.maps.golang_test_file = function()
