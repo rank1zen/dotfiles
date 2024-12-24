@@ -284,6 +284,11 @@ Deps.later(function()
       templ = { 'templ' },
       c = { 'clang-format' },
     },
+    format_on_save = function (bufnr)
+      if vim.bo[bufnr].filetype == 'go' then
+        return { timeout_ms = 500, formatters = { 'goimports' } }
+      end
+    end
   }
 end)
 
