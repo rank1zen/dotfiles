@@ -37,12 +37,12 @@ c.url.searchengines['re'] = 'https://www.reddit.com/search/?q={}'
 c.url.searchengines['wi'] = 'https://en.wikipedia.org/wiki/Special:Search/{}'
 c.url.searchengines['yt'] = 'https://www.youtube.com/results?search_query={}'
 
-c.editor.command = ['foot', '-e', 'nvim', '{file}', '-c', 'normal {line}G{column0}l']
-
-c.fileselect.handler = 'external'
-c.fileselect.folder.command = ['foot', '-e', 'zsh', '-c', 'realpath $(find . -type -d | fzf) > {}']
-c.fileselect.multiple_files.command = ['foot', '-e', 'zsh', '-c', 'realpath $(fzf -m) > {}']
-c.fileselect.single_file.command = ['foot', '-e', 'zsh', '-c', 'realpath $(fzf) > {}']
+# c.editor.command = ['foot', '-e', 'nvim', '{file}', '-c', 'normal {line}G{column0}l']
+#
+# c.fileselect.handler = 'external'
+# c.fileselect.folder.command = ['foot', '-e', 'zsh', '-c', 'realpath $(find . -type -d | fzf) > {}']
+# c.fileselect.multiple_files.command = ['foot', '-e', 'zsh', '-c', 'realpath $(fzf -m) > {}']
+# c.fileselect.single_file.command = ['foot', '-e', 'zsh', '-c', 'realpath $(fzf) > {}']
 
 config.bind('<Ctrl-o>', 'tab-focus stack-prev')
 config.bind('<Ctrl-i>', 'tab-focus stack-next')
