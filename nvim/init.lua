@@ -319,11 +319,6 @@ Deps.later(function()
   require('lspconfig').nixd.setup {}
 end)
 
-Deps.later(function()
-  --deps.add('Bekaboo/dropbar.nvim')
-  --local dropbar = require('dropbar.api')
-end)
-
 Cfg.maps.golang_test_file = function()
   local file = vim.fn.expand('%')
   if #file <= 1 then
