@@ -242,19 +242,14 @@ end)
 
 Deps.now(function()
   -- stylua: ignore start
-  Cfg.leader('lq',  '<cmd>lua vim.lsp.buf.definition()<cr>',      'Definition')
   Cfg.leader('lt',  '<cmd>lua vim.lsp.buf.type_definition()<cr>', 'Type definition')
-  Cfg.leader('lr',  '<cmd>Pick lsp scope="references"<cr>',       'References')
   Cfg.leader('li',  '<cmd>lua vim.lsp.buf.implementation()<cr>',  'Implementation')
   Cfg.leader('ls',  '<cmd>lua vim.lsp.buf.signature_help()<cr>',  'Signature')
+  Cfg.leader('lu',  '<cmd>lua vim.lsp.buf.declaration()<cr>',     'Declaration')
 
   Cfg.leader('lfo', '<cmd>Pick lsp scope="document_symbol"<cr>',  'Document symbol')
   Cfg.leader('lfw', '<cmd>Pick lsp scope="workspace_symbol"<cr>', 'Workspace symbol')
-
-  Cfg.leader('lfq', '<cmd>Pick lsp scope="definition"<cr>',       'Definition')
-  Cfg.leader('lfi', '<cmd>Pick lsp scope="implementation"<cr>',   'Implementation')
-  Cfg.leader('lfu', '<cmd>Pick lsp scope="declaration"<cr>',      'Declaration')
-  Cfg.leader('lft', '<cmd>Pick lsp scope="type_definition"<cr>',  'Type definition')
+  Cfg.leader('lfr', '<cmd>Pick lsp scope="references"<cr>',       'References')
 
   Cfg.leader('lfd', '<cmd>Pick diagnostic scope="all"<cr>',       'Diagnostic (all)')
   Cfg.leader('lfD', '<cmd>Pick diagnostic scope="current"<cr>',   'Diagnostic (current)')
@@ -262,11 +257,9 @@ Deps.now(function()
   Cfg.leader('lar', '<cmd>lua vim.lsp.buf.rename()<cr>',          'Rename')
   Cfg.leader('las', '<cmd>lua vim.lsp.buf.code_action()<cr>',     'Code Action')
 
-  Cfg.leader('laf', '<cmd>lua require("conform").format()<cr>',   'Format')
-  Cfg.xeader('laf', '<cmd>lua require("conform").format()<cr>',   'Format Selection')
-
-  Cfg.leader('lga', '<cmd>lua Cfg.maps.golang_test_file()<cr>',   'Switch Go _test')
+  Cfg.leader('lgt', '<cmd>lua Cfg.maps.golang_test_file()<cr>',   'Switch Go _test')
   -- stylua: ignore end
+  vim.keymap.set('i', '<c-s>', '<cmd>lua vim.lsp.buf.signature_help()<cr>', { desc = 'Signature' })
 end)
 
 Deps.now(function()
