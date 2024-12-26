@@ -8,9 +8,9 @@
     "library": [
       "$VIMRUNTIME/lua",
       "${3rd}/luv/library",
+
       "$XDG_DATA_HOME/nvim/site/pack/deps/start/mini.nvim/lua",
       "$XDG_DATA_HOME/nvim/site/pack/deps/opt/conform.nvim/lua",
-      "$XDG_DATA_HOME/nvim/site/pack/deps/opt/dropbar.nvim/lua"
     ]
   }
 }
