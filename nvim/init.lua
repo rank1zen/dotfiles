@@ -97,7 +97,31 @@ Deps.now(function()
   -- stylua: ignore end
 end)
 
-Deps.later(function() require('mini.visits').setup() end)
+Deps.now(function()
+  require('mini.visits').setup {
+    list = {
+      filter = function(path_data)
+        -- filter out all directories
+        return vim.fn.isdirectory(path_data.path) == 0
+      end,
+      sort = require('mini.visits').gen_sort.default { recency_weight = 1 },
+    },
+  }
+end)
+
+Deps.now(function()
+  Cfg.leader('an', '<cmd>lua MiniVisits.iterate_paths("backward", nil)<cr>')
+  Cfg.leader('ap', '<cmd>lua MiniVisits.iterate_paths("forward",  nil)<cr>')
+  Cfg.leader('am', '<cmd>lua MiniVisits.add_label("core")<cr>')
+  Cfg.leader('ac', '<cmd>lua MiniVisits.remove_label("core")<cr>')
+  Cfg.leader('at', '<cmd>lua MiniVisits.add_label("trash")<cr>')
+
+  -- NOTE: MiniExtra visit pickers use default recency_weight 0.5, but passes
+  -- its given filter to MiniVists.list, which defaults to setup opts.
+  Cfg.leader('ar', '<cmd>Pick visit_paths recency_weight=1<cr>')
+  Cfg.leader('af', '<cmd>Pick visit_paths filter="core"<cr>')
+  Cfg.leader('al', '<cmd>Pick visit_paths filter="trash"<cr>')
+end)
 
 Deps.later(function()
   require('mini.ai').setup {
