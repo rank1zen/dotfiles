@@ -33,6 +33,10 @@ Deps.setup {
 }
 
 Deps.now(function()
+  vim.cmd('colorscheme noe')
+end)
+
+Deps.now(function()
   Cfg.borders = 'rounded'
 
   vim.g.mapleader = ' '
@@ -56,8 +60,6 @@ Deps.now(function()
     float = { border = Cfg.borders, source = 'if_many' },
     signs = false,
   }
-
-  --vim.cmd('colorscheme blue')
 end)
 
 Deps.later(function() require('mini.extra').setup() end)
