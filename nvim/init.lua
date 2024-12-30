@@ -99,7 +99,6 @@ Deps.later(function()
       g = require('mini.extra').gen_ai_spec.buffer(),
       c = require('mini.ai').gen_spec.treesitter { a = '@class.outer', i = '@class.inner' },
       d = require('mini.ai').gen_spec.treesitter { a = '@function.outer', i = '@function.inner' },
-      p = require('mini.ai').gen_spec.treesitter { a = '@parameter.outer', i = '@parameter.inner' },
     },
   }
 end)
