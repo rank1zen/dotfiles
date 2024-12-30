@@ -1,13 +1,12 @@
 {
-  config,
-  lib,
+  inputs,
   pkgs,
-  user,
+  lib,
   ...
 }: {
   home = {
-    username = "${user}";
-    homeDirectory = "/home/${user}";
+    username = "gordo";
+    homeDirectory = "/home/gordo";
     sessionVariables = {
       EDITOR = "nvim";
     };
@@ -16,29 +15,38 @@
         ln -sf -t $HOME/.config $HOME/nix-cfg/nvim  $HOME/nix-cfg/qutebrowser $HOME/nix-cfg/hypr
       '';
     };
+    packages = with pkgs; [
+      fd
+      fzf
+      jq
+      ripgrep
+      unzip
+      zip
+
+      # hyprland things
+      slurp
+      grim
+      fuzzel
+      wl-clipboard
+      swww
+      wlsunset
+
+      qutebrowser
+      hyprland
+    ];
+
+    # DO NOT TOUCH
+    stateVersion = "24.05";
+  };
+
+  xdg = {
+    enable = true;
+
+    userDirs.enable = true;
+    userDirs.createDirectories = true;
   };
 
   programs.home-manager.enable = true;
-
-  home.packages = with pkgs; [
-    fd
-    fzf
-    jq
-    ripgrep
-    unzip
-    zip
-
-    # hyprland things
-    slurp
-    grim
-    fuzzel
-    wl-clipboard
-    swww
-    wlsunset
-
-    qutebrowser
-    hyprland
-  ];
 
   programs.password-store = {
     enable = true;
@@ -107,6 +115,7 @@
     plugins = with pkgs.vimPlugins; [
       nvim-treesitter.withAllGrammars
     ];
+    package = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
     extraPackages = with pkgs; [
       ripgrep
       lua-language-server
@@ -116,16 +125,13 @@
     ];
   };
 
-  xdg = {
+  programs.fish = {
     enable = true;
-
-    userDirs.enable = true;
-    userDirs.createDirectories = true;
   };
 
-#  wayland.windowManager.hyprland = {
-#    enable = true;
-#  };
+  #  wayland.windowManager.hyprland = {
+  #    enable = true;
+  #  };
 
   programs.direnv = {
     enable = true;
@@ -133,5 +139,4 @@
     nix-direnv.enable = true;
   };
 
-  home.stateVersion = "24.05";
 }

@@ -1,6 +1,4 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
+# PC
 {
   config,
   pkgs,
@@ -15,18 +13,19 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "nixos"; # Define your hostname.
-  networking.networkmanager.enable = true;
-  networking.networkmanager.wifi.backend = "iwd";
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  # network settings
+  networking = {
+    hostName = "nixos";
+
+    networkmanager.enable = true;
+    networkmanager.wifi.backend = "iwd";
+    # wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  };
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
-  # Enable networking
-
-  # Set your time zone.
   time.timeZone = "America/Toronto";
 
   # Select internationalisation properties.
@@ -39,9 +38,18 @@
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.gordo = {
-    isNormalUser = true;
-    extraGroups = ["networkmanager" "wheel"];
+  users.users = {
+    gordo = {
+      isNormalUser = true;
+      extraGroups = ["networkmanager" "wheel"];
+    };
+  };
+
+  nixpkgs = {
+    # There are possibly other interesting settings here.
+
+    # Allow unfree packages
+    config.allowUnfree = true;
   };
 
   fonts = {
@@ -56,6 +64,7 @@
       lexend
       inter
     ];
+
     fontconfig = {
       subpixel.lcdfilter = "light";
       hinting.style = "full";
@@ -68,50 +77,43 @@
     };
   };
 
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
-
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    vim
     wget
     git
   ];
 
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  programs.gnupg.agent = {
-    enable = true;
-    enableSSHSupport = true;
+  programs = {
+    gnupg.agent = {
+      enable = true;
+      enableSSHSupport = true;
+    };
+
+    hyprland = {
+      enable = true;
+      xwayland.enable = true;
+    };
   };
 
-  services.openssh = {
-    enable = true;
-  };
+  services = {
+    openssh = {
+      enable = true;
+    };
 
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    wireplumber.enable = true;
-  };
-
-  programs.hyprland = {
-    enable = true;
-    xwayland.enable = true;
+    pipewire = {
+      enable = true;
+      alsa.enable = true;
+      alsa.support32Bit = true;
+      pulse.enable = true;
+      wireplumber.enable = true;
+    };
   };
 
   environment.sessionVariables = {
     WLR_NO_HARDWARE_CURSORS = "1";
   };
-
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
