@@ -71,59 +71,24 @@ Cfg.gen_stack = function()
   }
 end
 
-Cfg.gen_z = function()
-  return {
-    filter = function(path_data) return vim.fn.isdirectory(path_data.path) == 0 end,
-    sort = require('mini.visits').gen_sort.z(),
-  }
-end
-
 Deps.now(function()
   Cfg.leader('en', '<cmd>lua MiniVisits.iterate_paths("backward", nil, Cfg.gen_stack())<cr>')
   Cfg.leader('ep', '<cmd>lua MiniVisits.iterate_paths("forward",  nil, Cfg.gen_stack())<cr>')
   -- stylua: ignore start
-  Cfg.leader('ef', '<cmd>Pick files<cr>',                                         'List directory files')
-  Cfg.leader('eg', '<cmd>Pick grep_live<cr>',                                     'Live grep')
-  Cfg.leader('er', '<cmd>lua MiniExtra.pickers.visit_paths(Cfg.gen_stack())<cr>', 'List MRU file stack')
-  Cfg.leader('et', '<cmd>lua MiniExtra.pickers.visit_paths(Cfg.gen_z())<cr>',     'List Z file stack')
-  Cfg.leader('ec', '<cmd>lua MiniFiles.open(vim.api.nvim_buf_get_name(0))<cr>',   'Open file explorer at current file')
-  Cfg.leader('ed', '<cmd>lua MiniFiles.open()<cr>',                               'Open file explorer at CWD')
-  Cfg.leader('eb', '<cmd>Pick buf_lines<cr>',                                     'Pick and go to line')
-  Cfg.leader('ev', '<cmd>Pick help<cr>',                                          'Pick and go to help file')
-  Cfg.leader('es', '<cmd>Pick list scope="jump"<cr>',                             'List the jumplist')
-  Cfg.leader('ez', '<cmd>Pick resume<cr>',                                        'Resume most recent picker')
-  Cfg.leader('ew', '<cmd>Pick grep pattern="<cword>"<cr>',                        'Grep current word')
-  Cfg.leader('eq', '<cmd>Pick history scope=":"<cr>',                             'List command history')
-  Cfg.leader('ex', '<cmd>Pick options<cr>',                                       'Pick and apply option')
-  Cfg.leader('ea', '<cmd>Pick spellsuggest<cr>',                                  'Suggest spelling')
+  Cfg.leader('ef', '<cmd>Pick files<cr>',                                       'List directory files')
+  Cfg.leader('eg', '<cmd>Pick grep_live<cr>',                                   'Live grep')
+  Cfg.leader('eh', '<cmd>Pick help<cr>',                                        'Pick and go to help file')
+  Cfg.leader('ed', '<cmd>lua MiniFiles.open(vim.api.nvim_buf_get_name(0))<cr>', 'Open file explorer at current file')
+  Cfg.leader('es', '<cmd>Pick list scope="jump"<cr>',                           'List the jumplist')
+  Cfg.leader('ec', '<cmd>Pick history scope=":"<cr>',                           'List command history')
+  Cfg.leader('er', '<cmd>Pick visit_paths<cr>',                                 'List MRU file stack')
+  Cfg.leader('eR', '<cmd>Pick visit_paths filter="core"<cr>')
+  Cfg.leader('et', '<cmd>Pick visit_labels<cr>',                                'List MRU file stack')
+  Cfg.leader('ek', '<cmd>lua MiniVisits.add_label("core")<cr>')
   -- stylua: ignore end
 end)
 
-Deps.now(function()
-  require('mini.visits').setup {
-    list = {
-      filter = function(path_data)
-        -- filter out all directories
-        return vim.fn.isdirectory(path_data.path) == 0
-      end,
-      sort = require('mini.visits').gen_sort.default { recency_weight = 1 },
-    },
-  }
-end)
-
-Deps.now(function()
-  Cfg.leader('an', '<cmd>lua MiniVisits.iterate_paths("backward", nil)<cr>')
-  Cfg.leader('ap', '<cmd>lua MiniVisits.iterate_paths("forward",  nil)<cr>')
-  Cfg.leader('am', '<cmd>lua MiniVisits.add_label("core")<cr>')
-  Cfg.leader('ac', '<cmd>lua MiniVisits.remove_label("core")<cr>')
-  Cfg.leader('at', '<cmd>lua MiniVisits.add_label("trash")<cr>')
-
-  -- NOTE: MiniExtra visit pickers use default recency_weight 0.5, but passes
-  -- its given filter to MiniVists.list, which defaults to setup opts.
-  Cfg.leader('ar', '<cmd>Pick visit_paths recency_weight=1<cr>')
-  Cfg.leader('af', '<cmd>Pick visit_paths filter="core"<cr>')
-  Cfg.leader('al', '<cmd>Pick visit_paths filter="trash"<cr>')
-end)
+Deps.now(function() require('mini.visits').setup() end)
 
 Deps.later(function()
   require('mini.ai').setup {
