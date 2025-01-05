@@ -2,14 +2,22 @@
   description = "Dotfiles: RANK1ZEN";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs = {
+      url = "github:nixos/nixpkgs/nixos-unstable";
+    };
 
-    home-manager.url = "github:nix-community/home-manager";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
-    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+    hyprland = {
+      url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+    };
 
-    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
+    neovim-nightly-overlay = {
+      url = "github:nix-community/neovim-nightly-overlay";
+    };
   };
 
   outputs = inputs @ {
@@ -18,6 +26,7 @@
     home-manager,
     ...
   }: {
+
     # Used with `nixos-rebuild switch --flake .#<hostname>`
     # nixosConfigurations."<hostname>".config.system.build.toplevel must be a derivation
     nixosConfigurations = {
@@ -37,6 +46,16 @@
             };
             home-manager.users.gordo = import ./modules/home/gordo.nix;
           }
+        ];
+      };
+    };
+
+    # Used with `home-manager switch --flake .#<username>`
+    homeConfigurations = {
+      n0 = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.aarch64_darwin;
+        modules = [
+          ./modules/home/base.nix
         ];
       };
     };
