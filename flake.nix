@@ -53,9 +53,21 @@
     # Used with `home-manager switch --flake .#<username>`
     homeConfigurations = {
       n0 = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.aarch64_darwin;
+        pkgs = nixpkgs.legacyPackages.aarch64-darwin;
+	extraSpecialArgs = {
+	  inherit inputs;
+	};
         modules = [
           ./modules/home/base.nix
+	  ( {pkgs, ...}: {
+	  	nix.package = pkgs.nix;
+  nix.settings = {
+    experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
+  };
+	  })
         ];
       };
     };

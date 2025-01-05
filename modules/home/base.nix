@@ -4,16 +4,16 @@
   ...
 }: {
   home = {
-    username = "gordo"; # make these dynamicly set by the importer
-    homeDirectory = "/home/gordo";
+    username = "gordon"; # make these dynamicly set by the importer
+    homeDirectory = "/Users/gordon";
 
     sessionVariables = {
       EDITOR = "nvim";
     };
 
     activation = {
-      linkMyStuff = lib.hm.dag.entryAfter ["writeBoundary"] ''
-        ln -sf -t $HOME/.config $HOME/nix-cfg/nvim
+      linkNeovimConfig = lib.hm.dag.entryAfter ["writeBoundary"] ''
+      	ln -sf -t $HOME/.config $HOME/Desktop/dotfiles/nvim
       '';
     };
 
@@ -21,7 +21,6 @@
       fd
       fzf
       git
-      home-manager
       ripgrep
       tree
       unzip
@@ -31,6 +30,8 @@
 
     stateVersion = "24.05"; # WARN: DO NOT TOUCH
   };
+
+  programs.home-manager.enable = true;
 
   programs.neovim = {
     enable = true;
