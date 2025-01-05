@@ -4,6 +4,9 @@
   lib,
   ...
 }: {
+  imports = [
+    ./qutebrowser.nix
+  ];
   home = {
     username = "gordo";
     homeDirectory = "/home/gordo";
@@ -12,7 +15,7 @@
     };
     activation = {
       linkMyStuff = lib.hm.dag.entryAfter ["writeBoundary"] ''
-        ln -sf -t $HOME/.config $HOME/nix-cfg/nvim  $HOME/nix-cfg/qutebrowser $HOME/nix-cfg/hypr
+        ln -sf -t $HOME/.config $HOME/nix-cfg/nvim $HOME/nix-cfg/hypr
       '';
     };
     packages = with pkgs; [
@@ -31,7 +34,6 @@
       swww
       wlsunset
 
-      qutebrowser
       hyprland
     ];
 
