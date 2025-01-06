@@ -12,7 +12,7 @@
       math-stackexchange = "https://math.stackexchange.com/search?q={}";
       reddit = "https://www.reddit.com/search/?q={}";
       github = "https://github.com/search?q={}";
-      google = "https://www.google.com/q?={}";
+      google = "https://www.google.com/search?q={}";
 
       # On the chopping block
       archwiki = "https://wiki.archlinux.org/title/Special:Search/{}";
