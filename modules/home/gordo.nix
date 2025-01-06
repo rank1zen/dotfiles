@@ -7,6 +7,7 @@
   imports = [
     ./qutebrowser.nix
     ./foot.nix
+    ./zathura.nix
   ];
   home = {
     username = "gordo";
@@ -21,6 +22,7 @@
       '';
     };
     packages = with pkgs; [
+      tree
       fd
       fzf
       jq
@@ -62,56 +64,11 @@
     userEmail = "gordonchen2014@gmail.com";
   };
 
-  programs.bash.enable = true;
-
-  programs.foot = {
+  programs.bash = {
     enable = true;
-    settings = {
-      main.font = "Go Mono:size=12";
-      main.dpi-aware = true;
-      main.pad = "10x10";
-      colors.background = "ffffff";
-      colors.foreground = "000000";
-    };
-  };
-
-  programs.zathura = {
-    enable = true;
-    options = {
-      font = "LexendDeca";
-      default-fg = "#000000";
-      default-bg = "#ffffff";
-
-      completion-bg = "#ffffff";
-      completion-fg = "#999999";
-      completion-highlight-bg = "#ffffff";
-      completion-highlight-fg = "#000000";
-      completion-group-bg = "#ffffff";
-      completion-group-fg = "#000000";
-      notification-bg = "#ffffff";
-      notification-fg = "#000000";
-      notification-error-bg = "#ffffff";
-      notification-error-fg = "#ff0000";
-      notification-warning-bg = "#ffffff";
-      notification-warning-fg = "#ff0000";
-      inputbar-fg = "#000000";
-      inputbar-bg = "#ffffff";
-
-      index-fg = "#999999";
-      index-bg = "#ffffff";
-      index-active-fg = "#000000";
-      index-active-bg = "#ffffff";
-
-      render-loading-bg = "#ffffff";
-      render-loading-fg = "#000000";
-
-      highlight-color = "rgba(0,0,0,0.2)";
-      highlight-fg = "rgba(0,0,0,0.2)";
-      highlight-active-color = "rgba(0,0,0,0.2)";
-
-      window-title-home-tilde = "true";
-      window-title-page = "true";
-    };
+    bashrcExtra = ''
+      eval "$(direnv hook bash)"
+    '';
   };
 
   programs.neovim = {
