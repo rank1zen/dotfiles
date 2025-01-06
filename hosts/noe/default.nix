@@ -41,8 +41,22 @@
   users.users = {
     gordo = {
       isNormalUser = true;
-      extraGroups = ["networkmanager" "wheel"];
+      extraGroups = [
+        "networkmanager"
+        "wheel"
+        "docker"
+      ];
     };
+  };
+
+  virtualisation = {
+    docker = {
+      enable = true;
+    };
+  };
+
+  services = {
+    dockerRegistry.enable = true;
   };
 
   nixpkgs = {
