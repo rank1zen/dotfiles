@@ -32,9 +32,7 @@ Deps.setup {
   path = { package = path_package },
 }
 
-Deps.now(function()
-  vim.cmd('colorscheme noe')
-end)
+Deps.now(function() vim.cmd('colorscheme default') end)
 
 Deps.now(function()
   Cfg.borders = 'rounded'
@@ -44,7 +42,6 @@ Deps.now(function()
 
   vim.o.autoindent = true
   vim.o.pumheight = 10
-  vim.o.showmode = false
 
   vim.o.statusline = '%<%f %{getbufvar(bufnr(), "minigit_summary_string")} %h%m%r %= %-14.(%l,%c%V%) %P'
 
@@ -105,15 +102,18 @@ end)
 
 Deps.later(function()
   require('mini.pick').setup {
-    options = { content_from_bottom = true, use_cache = false },
+    -- options = { content_from_bottom = true, use_cache = false },
     source = { show = require('mini.pick').default_show },
     window = {
-      config = function()
-        return { height = math.floor(0.5 * vim.o.lines), width = vim.o.columns, row = 0, border = 'solid' }
-      end,
-      prompt_cursor = ' <<<',
-      prompt_prefix = '',
+      config = function() return { border = 'solid' } end,
     },
+    -- window = {
+    --   config = function()
+    --     return { height = math.floor(0.5 * vim.o.lines), width = vim.o.columns, row = 0, border = 'solid' }
+    --   end,
+    --   prompt_cursor = ' <<<',
+    --   prompt_prefix = '',
+    -- },
   }
 end)
 
@@ -248,13 +248,15 @@ Deps.now(function()
   Cfg.leader('las', '<cmd>lua vim.lsp.buf.code_action()<cr>',     'Code Action')
 
   Cfg.leader('lgt', '<cmd>lua Cfg.maps.golang_test_file()<cr>',   'Switch Go _test')
+
+  Cfg.leader('lr', '<cmd>lua vim.lsp.stop_client(vim.lsp.get_clients())', 'Stop all lsp clients')
   -- stylua: ignore end
   vim.keymap.set('i', '<c-s>', '<cmd>lua vim.lsp.buf.signature_help()<cr>', { desc = 'Signature' })
+  vim.keymap.set('n', 'grn', '<cmd>lua vim.lsp.buf.rename()<cr>')
+  vim.keymap.set({ 'n', 'x' }, 'gra', '<cmd>lua vim.lsp.buf.code_action()<cr>')
 end)
 
-Deps.now(function()
-  vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
-end)
+Deps.now(function() vim.o.formatexpr = "v:lua.require'conform'.formatexpr()" end)
 
 Deps.later(function()
   Deps.add('stevearc/conform.nvim')
@@ -266,12 +268,11 @@ Deps.later(function()
       nix = { 'alejandra' },
       templ = { 'templ' },
       c = { 'clang-format' },
+      json = { 'prettier'}
     },
-    format_on_save = function (bufnr)
-      if vim.bo[bufnr].filetype == 'go' then
-        return { timeout_ms = 500, formatters = { 'goimports' } }
-      end
-    end
+    format_on_save = function(bufnr)
+      if vim.bo[bufnr].filetype == 'go' then return { timeout_ms = 500, formatters = { 'goimports' } } end
+    end,
   }
 end)
 
@@ -285,16 +286,14 @@ Deps.later(function()
   }
 end)
 
-Deps.later(function()
-  require('mini.bracketed').setup()
-end)
+Deps.later(function() require('mini.bracketed').setup() end)
 
 Deps.later(function()
   Deps.add('stevearc/quicker.nvim')
   require('quicker').setup()
 
   Cfg.leader('dl', '<cmd>lua vim.diagnostic.setloclist()<cr>', 'List buffer diagnostics in location list.')
-  Cfg.leader('dq', '<cmd>lua vim.diagnostic.setqflist()<cr>',  'List global diagnostics in quickfix list.')
+  Cfg.leader('dq', '<cmd>lua vim.diagnostic.setqflist()<cr>', 'List global diagnostics in quickfix list.')
 end)
 
 Deps.later(function()
@@ -302,11 +301,48 @@ Deps.later(function()
 
   vim.api.nvim_create_autocmd('LspAttach', {
     group = vim.api.nvim_create_augroup('UserLspConfig', {}),
-    callback = function(ev) vim.bo[ev.buf].omnifunc = 'v:lua.MiniCompletion.completefunc_lsp' end,
+    callback = function(ev)
+      vim.bo[ev.buf].omnifunc = 'v:lua.MiniCompletion.completefunc_lsp'
+      vim.lsp.inlay_hint.enable(true, { bufnr = ev.buf })
+    end,
   })
 
   require('lspconfig').ccls.setup {}
-  require('lspconfig').gopls.setup {}
+  vim.lsp.enable('gopls', true)
+  -- require('lspconfig').gopls.setup {
+  --   capabilites = {
+  --     -- textDocument = {
+  --     --   inlayHint = true,
+  --     -- },
+  --   },
+  --   settings = {
+  --     gopls = {
+  --       codelenses = {
+  --         gc_details = false,
+  --         generate = true,
+  --         regenerate_cgo = true,
+  --         run_govulncheck = true,
+  --         test = true,
+  --         tidy = true,
+  --         upgrade_dependency = true,
+  --         vendor = true,
+  --       },
+  --       analyses = {
+  --         unusedparams = true,
+  --         unusedvariable = true,
+  --         unusedwrite = true,
+  --       },
+  --       hints = {
+  --         assignVariableTypes = true,
+  --         compositeLiteralFields = true,
+  --         compositeLiteralTypes = true,
+  --         constantValues = true,
+  --         parameterNames = true,
+  --         rangeVariableTypes = true,
+  --       },
+  --     },
+  --   },
+  -- }
   require('lspconfig').lua_ls.setup {}
   require('lspconfig').pyright.setup {}
   require('lspconfig').templ.setup {}
