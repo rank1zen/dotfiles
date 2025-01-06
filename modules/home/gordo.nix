@@ -6,12 +6,14 @@
 }: {
   imports = [
     ./qutebrowser.nix
+    ./foot.nix
   ];
   home = {
     username = "gordo";
     homeDirectory = "/home/gordo";
     sessionVariables = {
       EDITOR = "nvim";
+      SHELL = "fish";
     };
     activation = {
       linkMyStuff = lib.hm.dag.entryAfter ["writeBoundary"] ''
@@ -137,8 +139,6 @@
 
   programs.direnv = {
     enable = true;
-    enableBashIntegration = false;
     nix-direnv.enable = true;
   };
-
 }
