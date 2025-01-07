@@ -26,7 +26,6 @@
     home-manager,
     ...
   }: {
-
     # Used with `nixos-rebuild switch --flake .#<hostname>`
     # nixosConfigurations."<hostname>".config.system.build.toplevel must be a derivation
     nixosConfigurations = {
@@ -54,20 +53,20 @@
     homeConfigurations = {
       n0 = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.aarch64-darwin;
-	extraSpecialArgs = {
-	  inherit inputs;
-	};
+        extraSpecialArgs = {
+          inherit inputs;
+        };
         modules = [
           ./modules/home/base.nix
-	  ( {pkgs, ...}: {
-	  	nix.package = pkgs.nix;
-  nix.settings = {
-    experimental-features = [
-      "nix-command"
-      "flakes"
-    ];
-  };
-	  })
+          ({pkgs, ...}: {
+            nix.package = pkgs.nix;
+            nix.settings = {
+              experimental-features = [
+                "nix-command"
+                "flakes"
+              ];
+            };
+          })
         ];
       };
     };
