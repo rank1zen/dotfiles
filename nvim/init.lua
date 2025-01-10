@@ -1,17 +1,5 @@
 _G.Cfg = {}
 
-Cfg.leader = function(suffix, rhs, desc, opts)
-  opts = opts or {}
-  opts.desc = desc
-  vim.keymap.set('n', '<Leader>' .. suffix, rhs, opts)
-end
-
-Cfg.xeader = function(suffix, rhs, desc, opts)
-  opts = opts or {}
-  opts.desc = desc
-  vim.keymap.set('x', '<Leader>' .. suffix, rhs, opts)
-end
-
 Cfg.maps = {}
 
 Cfg.gen = {}
@@ -33,6 +21,10 @@ Deps.setup {
 }
 
 Deps.now(function() vim.cmd('colorscheme default') end)
+
+Deps.now(function()
+  require('n0.keybinds')
+end)
 
 Deps.now(function()
   vim.g.mapleader = ' '
@@ -72,23 +64,6 @@ Cfg.gen_stack = function()
     sort = require('mini.visits').gen_sort.default { recency_weight = 1 },
   }
 end
-
-Deps.now(function()
-  Cfg.leader('en', '<cmd>lua MiniVisits.iterate_paths("backward", nil, Cfg.gen_stack())<cr>')
-  Cfg.leader('ep', '<cmd>lua MiniVisits.iterate_paths("forward",  nil, Cfg.gen_stack())<cr>')
-  -- stylua: ignore start
-  Cfg.leader('ef', '<cmd>Pick files<cr>',                                       'List directory files')
-  Cfg.leader('eg', '<cmd>Pick grep_live<cr>',                                   'Live grep')
-  Cfg.leader('eh', '<cmd>Pick help<cr>',                                        'Pick and go to help file')
-  Cfg.leader('ed', '<cmd>lua MiniFiles.open(vim.api.nvim_buf_get_name(0))<cr>', 'Open file explorer at current file')
-  Cfg.leader('es', '<cmd>Pick list scope="jump"<cr>',                           'List the jumplist')
-  Cfg.leader('ec', '<cmd>Pick history scope=":"<cr>',                           'List command history')
-  Cfg.leader('er', '<cmd>Pick visit_paths<cr>',                                 'List MRU file stack')
-  Cfg.leader('eR', '<cmd>Pick visit_paths filter="core"<cr>')
-  Cfg.leader('et', '<cmd>Pick visit_labels<cr>',                                'List MRU file stack')
-  Cfg.leader('ek', '<cmd>lua MiniVisits.add_label("core")<cr>')
-  -- stylua: ignore end
-end)
 
 Deps.now(function() require('mini.visits').setup() end)
 
@@ -159,21 +134,6 @@ end)
 
 Deps.later(function() require('mini.jump2d').setup() end)
 
-Deps.now(function()
-  -- stylua: ignore start
-  Cfg.leader('gcc',  '<cmd>Git commit<cr>',                               'Create a commit')
-  Cfg.leader('gca',  '<cmd>Git commit --amend<cr>',                       'Amend the last commit and edit the message')
-
-  Cfg.leader('gbb',  '<cmd>vert Git blame -- %<cr>')
-
-  Cfg.leader('gczz', '<cmd>Git stash<cr>',                                'Push stash')
-  Cfg.leader('gczw', '<cmd>Git stash --keep-index<cr>',                   'Push stash of the work-tree')
-
-  Cfg.leader('ghu',  '<cmd>Pick git_hunks scope="unstaged"<cr>',          'List unstaged hunks')
-  Cfg.leader('ghU',  '<cmd>Pick git_hunks scope="unstaged" path="%"<cr>', 'List unstaged hunks of current file')
-  -- stylua: ignore end
-end)
-
 Deps.later(function() require('mini.diff').setup() end)
 Deps.later(function() require('mini.git').setup() end)
 
@@ -214,32 +174,6 @@ Deps.later(function()
       enable = true,
     },
   }
-end)
-
-Deps.now(function()
-  -- stylua: ignore start
-  Cfg.leader('lt',  '<cmd>lua vim.lsp.buf.type_definition()<cr>', 'Type definition')
-  Cfg.leader('li',  '<cmd>lua vim.lsp.buf.implementation()<cr>',  'Implementation')
-  Cfg.leader('ls',  '<cmd>lua vim.lsp.buf.signature_help()<cr>',  'Signature')
-  Cfg.leader('lu',  '<cmd>lua vim.lsp.buf.declaration()<cr>',     'Declaration')
-
-  Cfg.leader('lfo', '<cmd>Pick lsp scope="document_symbol"<cr>',  'Document symbol')
-  Cfg.leader('lfw', '<cmd>Pick lsp scope="workspace_symbol"<cr>', 'Workspace symbol')
-  Cfg.leader('lfr', '<cmd>Pick lsp scope="references"<cr>',       'References')
-
-  Cfg.leader('lfd', '<cmd>Pick diagnostic scope="all"<cr>',       'Diagnostic (all)')
-  Cfg.leader('lfD', '<cmd>Pick diagnostic scope="current"<cr>',   'Diagnostic (current)')
-
-  Cfg.leader('lar', '<cmd>lua vim.lsp.buf.rename()<cr>',          'Rename')
-  Cfg.leader('las', '<cmd>lua vim.lsp.buf.code_action()<cr>',     'Code Action')
-
-  Cfg.leader('lgt', '<cmd>lua Cfg.maps.golang_test_file()<cr>',   'Switch Go _test')
-
-  Cfg.leader('lr', '<cmd>lua vim.lsp.stop_client(vim.lsp.get_clients())', 'Stop all lsp clients')
-  -- stylua: ignore end
-  vim.keymap.set('i', '<c-s>', '<cmd>lua vim.lsp.buf.signature_help()<cr>', { desc = 'Signature' })
-  vim.keymap.set('n', 'grn', '<cmd>lua vim.lsp.buf.rename()<cr>')
-  vim.keymap.set({ 'n', 'x' }, 'gra', '<cmd>lua vim.lsp.buf.code_action()<cr>')
 end)
 
 Deps.now(function() vim.o.formatexpr = "v:lua.require'conform'.formatexpr()" end)
