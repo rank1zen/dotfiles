@@ -35,13 +35,12 @@ Deps.setup {
 Deps.now(function() vim.cmd('colorscheme default') end)
 
 Deps.now(function()
-  Cfg.borders = 'rounded'
-
   vim.g.mapleader = ' '
   vim.g.maplocalleader = '\\'
 
   vim.o.autoindent = true
-  vim.o.pumheight = 10
+
+  require('n0.theme').set_global_opts()
 
   vim.o.statusline = '%<%f %{getbufvar(bufnr(), "minigit_summary_string")} %h%m%r %= %-14.(%l,%c%V%) %P'
 
@@ -107,36 +106,18 @@ Deps.later(function()
 end)
 
 Deps.later(function()
-  require('mini.pick').setup {
-    -- options = { content_from_bottom = true, use_cache = false },
-    source = { show = require('mini.pick').default_show },
-    window = {
-      config = function() return { border = 'solid' } end,
-    },
-    -- window = {
-    --   config = function()
-    --     return { height = math.floor(0.5 * vim.o.lines), width = vim.o.columns, row = 0, border = 'solid' }
-    --   end,
-    --   prompt_cursor = ' <<<',
-    --   prompt_prefix = '',
-    -- },
-  }
+  local opts = {}
+  opts = vim.tbl_deep_extend('error', opts, require('n0.theme').mini_pick())
+  require('mini.pick').setup(opts)
 end)
 
 Deps.later(function()
-  require('mini.files').setup {
-    content = { prefix = function() end },
+  local opts = {
     options = { permanent_delete = false, use_as_default_explorer = false },
   }
 
-  vim.api.nvim_create_autocmd('User', {
-    pattern = 'MiniFilesWindowOpen',
-    callback = function(args)
-      local config = vim.api.nvim_win_get_config(args.data.win_id)
-      config.border = 'solid'
-      vim.api.nvim_win_set_config(args.data.win_id, config)
-    end,
-  })
+  opts = vim.tbl_deep_extend('error', opts, require('n0.theme').mini_files())
+  require('mini.files').setup(opts)
 end)
 
 Deps.now(function()
@@ -161,7 +142,7 @@ Deps.now(function()
 end)
 
 Deps.later(function()
-  require('mini.completion').setup {
+  local opts = {
     lsp_completion = {
       auto_setup = false,
       source_func = 'omnifunc',
@@ -170,11 +151,10 @@ Deps.later(function()
         return require('mini.completion').default_process_items(items, base)
       end,
     },
-    window = {
-      info = { border = Cfg.borders },
-      signature = { border = Cfg.borders },
-    },
   }
+
+  opts = vim.tbl_deep_extend('error', opts, require('n0.theme').mini_completion())
+  require('mini.completion').setup(opts)
 end)
 
 Deps.later(function() require('mini.jump2d').setup() end)
