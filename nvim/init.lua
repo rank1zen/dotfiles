@@ -51,12 +51,6 @@ Deps.now(function()
     },
     pattern = { ['.*/hypr/.*%.conf'] = 'hyprlang' },
   }
-
-  vim.diagnostic.config {
-    virtual_text = {},
-    float = { border = Cfg.borders, source = 'if_many' },
-    signs = false,
-  }
 end)
 
 Deps.later(function() require('mini.extra').setup() end)
