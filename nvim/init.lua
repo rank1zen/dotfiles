@@ -51,6 +51,18 @@ Deps.now(function()
     },
     pattern = { ['.*/hypr/.*%.conf'] = 'hyprlang' },
   }
+
+  vim.lsp.enable { 'gopls', 'luals', 'nixd', 'pyright', 'templ', 'texlab' }
+end)
+
+Deps.later(function()
+  vim.api.nvim_create_autocmd('LspAttach', {
+    group = vim.api.nvim_create_augroup('UserLspConfig', {}),
+    callback = function(ev)
+      vim.bo[ev.buf].omnifunc = 'v:lua.MiniCompletion.completefunc_lsp'
+      vim.lsp.inlay_hint.enable(true, { bufnr = ev.buf })
+    end,
+  })
 end)
 
 Deps.later(function() require('mini.extra').setup() end)
@@ -288,60 +300,6 @@ Deps.later(function()
 
   Cfg.leader('dl', '<cmd>lua vim.diagnostic.setloclist()<cr>', 'List buffer diagnostics in location list.')
   Cfg.leader('dq', '<cmd>lua vim.diagnostic.setqflist()<cr>', 'List global diagnostics in quickfix list.')
-end)
-
-Deps.later(function()
-  Deps.add('neovim/nvim-lspconfig')
-
-  vim.api.nvim_create_autocmd('LspAttach', {
-    group = vim.api.nvim_create_augroup('UserLspConfig', {}),
-    callback = function(ev)
-      vim.bo[ev.buf].omnifunc = 'v:lua.MiniCompletion.completefunc_lsp'
-      vim.lsp.inlay_hint.enable(true, { bufnr = ev.buf })
-    end,
-  })
-
-  require('lspconfig').ccls.setup {}
-  vim.lsp.enable('gopls', true)
-  -- require('lspconfig').gopls.setup {
-  --   capabilites = {
-  --     -- textDocument = {
-  --     --   inlayHint = true,
-  --     -- },
-  --   },
-  --   settings = {
-  --     gopls = {
-  --       codelenses = {
-  --         gc_details = false,
-  --         generate = true,
-  --         regenerate_cgo = true,
-  --         run_govulncheck = true,
-  --         test = true,
-  --         tidy = true,
-  --         upgrade_dependency = true,
-  --         vendor = true,
-  --       },
-  --       analyses = {
-  --         unusedparams = true,
-  --         unusedvariable = true,
-  --         unusedwrite = true,
-  --       },
-  --       hints = {
-  --         assignVariableTypes = true,
-  --         compositeLiteralFields = true,
-  --         compositeLiteralTypes = true,
-  --         constantValues = true,
-  --         parameterNames = true,
-  --         rangeVariableTypes = true,
-  --       },
-  --     },
-  --   },
-  -- }
-  require('lspconfig').lua_ls.setup {}
-  require('lspconfig').pyright.setup {}
-  require('lspconfig').templ.setup {}
-  require('lspconfig').texlab.setup {}
-  require('lspconfig').nixd.setup {}
 end)
 
 Cfg.maps.golang_test_file = function()
