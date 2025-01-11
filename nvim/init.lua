@@ -211,9 +211,6 @@ Deps.later(function() require('mini.bracketed').setup() end)
 Deps.later(function()
   Deps.add('stevearc/quicker.nvim')
   require('quicker').setup()
-
-  Cfg.leader('dl', '<cmd>lua vim.diagnostic.setloclist()<cr>', 'List buffer diagnostics in location list.')
-  Cfg.leader('dq', '<cmd>lua vim.diagnostic.setqflist()<cr>', 'List global diagnostics in quickfix list.')
 end)
 
 Cfg.maps.golang_test_file = function()

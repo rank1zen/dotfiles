@@ -44,3 +44,6 @@ leader('gczz', '<cmd>Git stash<cr>',                                        'Pus
 leader('gczw', '<cmd>Git stash --keep-index<cr>',                           'Push stash of the work-tree')
 leader('ghu',  '<cmd>Pick git_hunks scope="unstaged"<cr>',                  'List unstaged hunks')
 leader('ghU',  '<cmd>Pick git_hunks scope="unstaged" path="%"<cr>',         'List unstaged hunks of current file')
+
+leader('dl',   '<cmd>lua vim.diagnostic.setloclist()<cr>',                  'List buffer diagnostics in location list.')
+leader('dq',   '<cmd>lua vim.diagnostic.setqflist()<cr>',                   'List global diagnostics in quickfix list.')
