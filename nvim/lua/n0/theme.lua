@@ -72,6 +72,23 @@ Theme.mini_completion = function()
   }
 end
 
+Theme.mini_notify = function()
+  return {
+    window = {
+      config = function()
+        return {
+          anchor = 'NW',
+          row = math.floor(0.1 * vim.o.lines),
+          col = math.floor(0.35 * vim.o.columns),
+          border = 'solid',
+        }
+      end,
+    },
+    max_width_share = 0.5,
+    winblend = 7,
+  }
+end
+
 Theme.set_global_opts = function()
   vim.o.showmode = false
   vim.o.winblend = 7
