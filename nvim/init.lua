@@ -46,20 +46,6 @@ Deps.now(function()
   vim.lsp.enable { 'gopls', 'luals', 'nixd', 'pyright', 'templ', 'texlab' }
 end)
 
-Deps.now(function()
-  local opts = {
-    content = {
-      sort = function(notif_arr)
-        notif_arr = vim.tbl_filter(function(notif) return not vim.startswith(notif.msg, 'luals: Diagnosing') end, notif_arr)
-        return require('mini.notify').default_sort(notif_arr)
-      end,
-    },
-  }
-  opts = vim.tbl_deep_extend('error', opts, require('n0.theme').mini_notify())
-  require('mini.notify').setup(opts)
-  vim.notify = require('mini.notify').make_notify()
-end)
-
 Deps.later(function()
   vim.api.nvim_create_autocmd('LspAttach', {
     group = vim.api.nvim_create_augroup('UserLspConfig', {}),
