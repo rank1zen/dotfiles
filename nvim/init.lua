@@ -239,7 +239,6 @@ Deps.later(function()
   local snippets = require('mini.snippets')
   snippets.setup {
     snippets = {
-      snippets.gen_loader.from_file('~/nix-cfg/nvim/snippets/global.json'),
       snippets.gen_loader.from_lang(),
     },
   }
