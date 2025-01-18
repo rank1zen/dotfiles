@@ -20,7 +20,9 @@ Deps.setup {
   path = { package = path_package },
 }
 
-Deps.now(function() vim.cmd('colorscheme default') end)
+Deps.now(function()
+  vim.cmd('colorscheme default')
+end)
 
 Deps.now(function()
   require('n0.keybinds')
@@ -56,16 +58,22 @@ Deps.later(function()
   })
 end)
 
-Deps.later(function() require('mini.extra').setup() end)
+Deps.later(function()
+  require('mini.extra').setup()
+end)
 
 Cfg.gen_stack = function()
   return {
-    filter = function(path_data) return vim.fn.isdirectory(path_data.path) == 0 end,
+    filter = function(path_data)
+      return vim.fn.isdirectory(path_data.path) == 0
+    end,
     sort = require('mini.visits').gen_sort.default { recency_weight = 1 },
   }
 end
 
-Deps.now(function() require('mini.visits').setup() end)
+Deps.now(function()
+  require('mini.visits').setup()
+end)
 
 Deps.later(function()
   require('mini.ai').setup {
@@ -122,7 +130,9 @@ Deps.later(function()
       auto_setup = false,
       source_func = 'omnifunc',
       process_items = function(items, base)
-        items = vim.tbl_filter(function(x) return x.kind ~= 1 and x.kind ~= 15 end, items)
+        items = vim.tbl_filter(function(x)
+          return x.kind ~= 1 and x.kind ~= 15
+        end, items)
         return require('mini.completion').default_process_items(items, base)
       end,
     },
@@ -132,18 +142,41 @@ Deps.later(function()
   require('mini.completion').setup(opts)
 end)
 
-Deps.later(function() require('mini.jump2d').setup() end)
+Deps.later(function()
+  require('mini.jump2d').setup()
+end)
 
-Deps.later(function() require('mini.diff').setup() end)
-Deps.later(function() require('mini.git').setup() end)
+Deps.later(function()
+  require('mini.diff').setup()
+end)
 
-Deps.later(function() require('mini.pairs').setup() end)
-Deps.later(function() require('mini.align').setup() end)
-Deps.later(function() require('mini.operators').setup() end)
-Deps.later(function() require('mini.surround').setup() end)
+Deps.later(function()
+  require('mini.git').setup()
+end)
 
-Deps.later(function() require('mini.splitjoin').setup() end)
-Deps.later(function() require('mini.trailspace').setup() end)
+Deps.later(function()
+  require('mini.pairs').setup()
+end)
+
+Deps.later(function()
+  require('mini.align').setup()
+end)
+
+Deps.later(function()
+  require('mini.operators').setup()
+end)
+
+Deps.later(function()
+  require('mini.surround').setup()
+end)
+
+Deps.later(function()
+  require('mini.splitjoin').setup()
+end)
+
+Deps.later(function()
+  require('mini.trailspace').setup()
+end)
 
 Deps.later(function()
   -- deps.add({
@@ -162,7 +195,9 @@ Deps.later(function()
     highlight = {
       enable = true,
       disable = function(_, buf)
-        if not vim.bo[buf].modifiable then return false end
+        if not vim.bo[buf].modifiable then
+          return false
+        end
         local ok, stats = pcall(vim.uv.fs_stat, vim.api.nvim_buf_get_name(buf))
         return ok and stats and stats.size > (250 * 1024)
       end,
@@ -176,7 +211,9 @@ Deps.later(function()
   }
 end)
 
-Deps.now(function() vim.o.formatexpr = "v:lua.require'conform'.formatexpr()" end)
+Deps.now(function()
+  vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
+end)
 
 Deps.later(function()
   Deps.add('stevearc/conform.nvim')
@@ -192,8 +229,12 @@ Deps.later(function()
       markdown = { 'prettier' },
     },
     format_on_save = function(bufnr)
-      if vim.bo[bufnr].filetype == 'go' then return { timeout_ms = 500, formatters = { 'goimports' } } end
-      if vim.bo[bufnr].filetype == 'markdown' then return { timeout_ms = 500, formatters = { 'prettier' } } end
+      if vim.bo[bufnr].filetype == 'go' then
+        return { timeout_ms = 500, formatters = { 'goimports' } }
+      end
+      if vim.bo[bufnr].filetype == 'markdown' then
+        return { timeout_ms = 500, formatters = { 'prettier' } }
+      end
     end,
   }
 end)
@@ -208,7 +249,9 @@ Deps.later(function()
   }
 end)
 
-Deps.later(function() require('mini.bracketed').setup() end)
+Deps.later(function()
+  require('mini.bracketed').setup()
+end)
 
 Deps.later(function()
   Deps.add('stevearc/quicker.nvim')
