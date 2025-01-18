@@ -12,7 +12,7 @@ vim.api.nvim_create_autocmd('User', {
 Theme.mini_pick = function()
   return {
     options = {
-      content_from_bottom = true,
+      content_from_bottom = false,
     },
     source = {
       show = function(buf_id, items, query)
@@ -28,19 +28,18 @@ Theme.mini_pick = function()
     },
     window = {
       config = function()
-        local h = math.floor(0.8 * vim.o.lines)
-        local w = math.floor(0.6 * vim.o.columns)
+        local h = math.max(15, math.floor(0.25 * vim.o.lines))
+        local w = math.max(80, math.floor(0.6 * vim.o.columns))
         return {
-          anchor = 'NW',
-          row = math.floor(0.4 * (vim.o.lines - h)),
+          anchor = 'SW',
+          row = math.floor(0.5 * vim.o.lines),
           col = math.floor(0.5 * (vim.o.columns - w)),
           height = h,
           width = w,
           border = 'solid',
         }
       end,
-      -- prompt_cursor = ' <<<',
-      prompt_prefix = '  ',
+      prompt_prefix = '   ',
     },
   }
 end
