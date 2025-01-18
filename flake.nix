@@ -21,7 +21,6 @@
   };
 
   outputs = inputs @ {
-    self,
     nixpkgs,
     home-manager,
     ...
@@ -31,21 +30,8 @@
     nixosConfigurations = {
       noe = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
-        specialArgs = {
-          inherit inputs;
-        };
-        modules = [
-          ./hosts/noe
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.extraSpecialArgs = {
-              inherit inputs;
-            };
-            home-manager.users.gordo = import ./modules/home/gordo.nix;
-          }
-        ];
+        specialArgs = {inherit inputs;};
+        modules = [./hosts/noe/configuration.nix];
       };
     };
 
@@ -64,6 +50,41 @@
               experimental-features = [
                 "nix-command"
                 "flakes"
+              ];
+            };
+          })
+        ];
+      };
+      n1 = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        extraSpecialArgs = {
+          inherit inputs;
+        };
+        modules = [
+          ./modules/home/base.nix
+          ./modules/home/desktop.nix
+          ({
+            pkgs,
+            lib,
+            ...
+          }: {
+            nix.package = pkgs.nix;
+            home = {
+              username = "gordo";
+              homeDirectory = "/home/gordo";
+              activation = {
+                linkMyStuff = lib.hm.dag.entryAfter ["writeBoundary"] ''
+                  ln -sf -t $HOME/nix-cfg/hypr
+                '';
+              };
+              packages = with pkgs; [
+                # hyprland things
+                slurp
+                grim
+                fuzzel
+                wl-clipboard
+
+                hyprland
               ];
             };
           })

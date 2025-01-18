@@ -1,20 +1,12 @@
 {
+  inputs,
   pkgs,
-  lib,
   ...
 }: {
   home = {
-    username = "gordon"; # make these dynamicly set by the importer
-    homeDirectory = "/Users/gordon";
-
     sessionVariables = {
       EDITOR = "nvim";
-    };
-
-    activation = {
-      linkNeovimConfig = lib.hm.dag.entryAfter ["writeBoundary"] ''
-      	ln -sf -t $HOME/.config $HOME/Desktop/dotfiles/nvim
-      '';
+      VISUAL = "nvim";
     };
 
     packages = with pkgs; [
@@ -28,19 +20,51 @@
       zip
     ];
 
-    stateVersion = "24.05"; # WARN: DO NOT TOUCH
+    stateVersion = "24.05";
   };
 
-  programs.home-manager.enable = true;
+  nix = {
+    settings = {
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
+    };
+  };
 
-  programs.neovim = {
+  programs = {
+    home-manager = {
+      enable = true;
+    };
+
+    git = {
+      enable = true;
+      userName = "gordon";
+      userEmail = "gordonchen2014@gmail.com";
+    };
+
+    neovim = {
+      enable = true;
+      plugins = with pkgs.vimPlugins; [
+        nvim-treesitter.withAllGrammars
+      ];
+      package = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
+      extraPackages = with pkgs; [
+        nixd
+        alejandra
+        lua-language-server
+        stylua
+      ];
+    };
+  };
+
+  xdg = {
     enable = true;
-    plugins = with pkgs.vimPlugins; [
-      nvim-treesitter.withAllGrammars
-    ];
-    extraPackages = with pkgs; [
-      nixd
-      alejandra
-    ];
+
+    configFile = {
+      nvim = {
+        source = ../../nvim;
+      };
+    };
   };
 }

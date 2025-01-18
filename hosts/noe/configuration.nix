@@ -1,7 +1,8 @@
 {pkgs, ...}: {
-  impots = [
+  imports = [
     ./hardware-configuration.nix
   ];
+
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   networking = {
@@ -15,6 +16,7 @@
     layout = "us";
     variant = "";
   };
+
   users.users = {
     gordo = {
       isNormalUser = true;
@@ -25,13 +27,17 @@
       ];
     };
   };
+
   virtualisation = {
     docker = {
       enable = true;
     };
   };
+
   services = {
-    dockerRegistry.enable = true;
+    dockerRegistry = {
+      enable = true;
+    };
     openssh = {
       enable = true;
     };
@@ -43,32 +49,39 @@
       wireplumber.enable = true;
     };
   };
-  nixpkgs = {
-    config.allowUnfree = true;
-  };
+
   fonts = {
     packages = with pkgs; [
       noto-fonts
       noto-fonts-cjk-sans
       noto-fonts-cjk-serif
       noto-fonts-emoji
-      source-sans
-      source-serif
-      go-font
-      lexend
       inter
+      jetbrains-mono
+      nerd-fonts.jetbrains-mono
     ];
     fontconfig = {
-      subpixel.lcdfilter = "light";
-      hinting.style = "full";
+      # subpixel.lcdfilter = "light";
+      # hinting.style = "full";
       defaultFonts = {
-        serif = ["Noto Serif"];
-        sansSerif = ["Noto Sans"];
-        monospace = ["Noto Sans Mono"];
-        emoji = ["Noto Color Emoji"];
+        serif = [
+          "Noto Serif"
+        ];
+        sansSerif = [
+          "Inter"
+          "DejaVu Sans"
+        ];
+        monospace = [
+          "JetBrains Mono"
+          "DejaVu Sans Mono"
+        ];
+        emoji = [
+          "Noto Color Emoji"
+        ];
       };
     };
   };
+
   environment = {
     systemPackages = with pkgs; [
       vim
@@ -79,6 +92,7 @@
       WLR_NO_HARDWARE_CURSORS = "1";
     };
   };
+
   programs = {
     gnupg.agent = {
       enable = true;
@@ -89,6 +103,7 @@
       xwayland.enable = true;
     };
   };
+
   system.stateVersion = "24.05";
   nix.settings.experimental-features = ["nix-command" "flakes"];
 }

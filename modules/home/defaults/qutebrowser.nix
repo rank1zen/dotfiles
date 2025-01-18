@@ -7,6 +7,16 @@
       tabs = {
         select_on_remove = "last-used";
       };
+      fonts = {
+        default_size = "14px";
+        default_family = "Inter Display Medium";
+
+        web = {
+          family = {
+            sans_serif = "Inter";
+          };
+        };
+      };
     };
     searchEngines = {
       y = "https://www.youtube.com/results?search_query={}";
