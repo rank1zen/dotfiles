@@ -175,10 +175,6 @@ Deps.later(function()
 end)
 
 Deps.later(function()
-  require('mini.trailspace').setup()
-end)
-
-Deps.later(function()
   -- deps.add({
   --   source = 'nvim-treesitter/nvim-treesitter',
   --   checkout = 'master',
