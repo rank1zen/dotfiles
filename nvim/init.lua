@@ -224,14 +224,6 @@ Deps.later(function()
       json = { 'prettier' },
       markdown = { 'prettier' },
     },
-    format_on_save = function(bufnr)
-      if vim.bo[bufnr].filetype == 'go' then
-        return { timeout_ms = 500, formatters = { 'goimports' } }
-      end
-      if vim.bo[bufnr].filetype == 'markdown' then
-        return { timeout_ms = 500, formatters = { 'prettier' } }
-      end
-    end,
   }
 end)
 
